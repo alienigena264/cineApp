@@ -1,7 +1,9 @@
 {
     "cSpell.words": [
         "cinemapedia",
-        "moviedb"
+        "dotenv",
+        "moviedb",
+        "riverpod"
     ],
     "cSpell.language": "en,es-ES"
 }
