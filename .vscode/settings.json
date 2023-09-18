@@ -1,9 +1,13 @@
 {
     "cSpell.words": [
+        "autoplay",
         "cinemapedia",
         "dotenv",
         "moviedb",
-        "riverpod"
+        "paginación",
+        "riverpod",
+        "swiper",
+        "Swiper"
     ],
     "cSpell.language": "en,es-ES"
 }
