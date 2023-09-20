@@ -35,68 +35,77 @@ class __HomeBodyState extends ConsumerState<_HomeBody> {
 
   @override
   Widget build(BuildContext context) {
+
+    final initialLoader = ref.watch(initialLoaderProvider);
+
+    if (initialLoader) return const FullScreenLoader();
+
     final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
     final playingMoviesSlide = ref.watch(moviesSlideShowProvider);
     final popularMovies = ref.watch(popularMoviesProvider);
     final upcomingMovies = ref.watch(upcomingProvider);
     final topRatedMovies = ref.watch(topRatedProvider);
 
-    return CustomScrollView(slivers: [
-      const SliverAppBar(
-        floating: true,
-        flexibleSpace: FlexibleSpaceBar(
-          titlePadding: EdgeInsets.symmetric(horizontal: 10),
-          title: CustomAppBar(),
+
+    return Visibility(
+      visible: !initialLoader,
+      child: CustomScrollView(slivers: [
+        const SliverAppBar(
+          floating: true,
+          flexibleSpace: FlexibleSpaceBar(
+            titlePadding: EdgeInsets.symmetric(horizontal: 10),
+            title: CustomAppBar(),
+          ),
         ),
-      ),
-      SliverList(
-          delegate: SliverChildBuilderDelegate(
-        (context, index) {
-          return Column(
-            children: [
-              // const CustomAppBar(),
-              MoviesSlidesShow(movies: playingMoviesSlide),
-
-
-              MovieHorizontalListView(
-                  movies: nowPlayingMovies,
-                  tittle: 'En cines',
-                  subtitle: 'Lunes 18',
-                  loadNextPage: () {
-                    ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
-                  }),
-
-
-              MovieHorizontalListView(
-                  movies: popularMovies,
-                  tittle: 'Populares',
-                  // subtitle: '',
-                  loadNextPage: () {
-                    ref.read(popularMoviesProvider.notifier).loadNextPage();
-                  }),
-
-
-              MovieHorizontalListView(
-                  movies: upcomingMovies,
-                  tittle: 'Próximamente',
-                  subtitle: 'Este mes',
-                  loadNextPage: () {
-                    ref.read(upcomingProvider.notifier).loadNextPage();
-                  }),
-
-
-              MovieHorizontalListView(
-                  movies: topRatedMovies,
-                  tittle: 'Mejor calificadas',
-                  // subtitle: 'Lunes 18',
-                  loadNextPage: () {
-                    ref.read(topRatedProvider.notifier).loadNextPage();
-                  }),
-            ],
-          );
-        },
-        childCount: 1,
-      ))
-    ]);
+        SliverList(
+            delegate: SliverChildBuilderDelegate(
+          (context, index) {
+            return Column(
+              children: [
+                // const CustomAppBar(),
+                MoviesSlidesShow(movies: playingMoviesSlide),
+    
+    
+                MovieHorizontalListView(
+                    movies: nowPlayingMovies,
+                    tittle: 'En cines',
+                    subtitle: 'Lunes 18',
+                    loadNextPage: () {
+                      ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+                    }),
+    
+    
+                MovieHorizontalListView(
+                    movies: popularMovies,
+                    tittle: 'Populares',
+                    // subtitle: '',
+                    loadNextPage: () {
+                      ref.read(popularMoviesProvider.notifier).loadNextPage();
+                    }),
+    
+    
+                MovieHorizontalListView(
+                    movies: upcomingMovies,
+                    tittle: 'Próximamente',
+                    subtitle: 'Este mes',
+                    loadNextPage: () {
+                      ref.read(upcomingProvider.notifier).loadNextPage();
+                    }),
+    
+    
+                MovieHorizontalListView(
+                    movies: topRatedMovies,
+                    tittle: 'Mejor calificadas',
+                    // subtitle: 'Lunes 18',
+                    loadNextPage: () {
+                      ref.read(topRatedProvider.notifier).loadNextPage();
+                    }),
+              ],
+            );
+          },
+          childCount: 1,
+        ))
+      ]),
+    );
   }
 }
