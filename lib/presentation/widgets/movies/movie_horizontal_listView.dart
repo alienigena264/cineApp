@@ -1,6 +1,11 @@
+// ignore: duplicate_ignore
+// ignore: file_names
+// ignore_for_file: file_names
+
 import 'package:animate_do/animate_do.dart';
 import 'package:cinemapedia/config/helpers/human_formats.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../domain/entities/movie.dart';
 
@@ -95,7 +100,9 @@ class _Slide extends StatelessWidget {
                   width: 150,
                   loadingBuilder: (context, child, loadingProcess) {
                     return loadingProcess == null
-                        ? FadeIn(child: child)
+                        ? GestureDetector(
+                          onTap: () => context.push('/movie/${movie.id}'),
+                          child: FadeIn(child: child))
                         : const SizedBox(
                             width: 150,
                             height: 200,
