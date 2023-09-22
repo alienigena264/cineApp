@@ -100,6 +100,33 @@ class __HomeBodyState extends ConsumerState<_HomeBody> {
                     loadNextPage: () {
                       ref.read(topRatedProvider.notifier).loadNextPage();
                     }),
+
+                        
+                MovieHorizontalListView(
+                    movies: topRatedMovies,
+                    tittle: 'Mejor calificadas',
+                    // subtitle: 'Lunes 18',
+                    loadNextPage: () {
+                      ref.read(topRatedProvider.notifier).loadNextPage();
+                    }),
+
+
+                MovieHorizontalListView(
+                    movies: topRatedMovies,
+                    tittle: 'Mejor calificadas',
+                    // subtitle: 'Lunes 18',
+                    loadNextPage: () {
+                      ref.read(topRatedProvider.notifier).loadNextPage();
+                    }),
+
+
+                MovieHorizontalListView(
+                    movies: topRatedMovies,
+                    tittle: 'Mejor calificadas',
+                    // subtitle: 'Lunes 18',
+                    loadNextPage: () {
+                      ref.read(topRatedProvider.notifier).loadNextPage();
+                    }),
               ],
             );
           },
