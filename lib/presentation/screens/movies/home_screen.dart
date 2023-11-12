@@ -35,7 +35,6 @@ class __HomeBodyState extends ConsumerState<_HomeBody> {
 
   @override
   Widget build(BuildContext context) {
-
     final initialLoader = ref.watch(initialLoaderProvider);
 
     if (initialLoader) return const FullScreenLoader();
@@ -45,7 +44,6 @@ class __HomeBodyState extends ConsumerState<_HomeBody> {
     final popularMovies = ref.watch(popularMoviesProvider);
     final upcomingMovies = ref.watch(upcomingProvider);
     final topRatedMovies = ref.watch(topRatedProvider);
-
 
     return Visibility(
       visible: !initialLoader,
@@ -64,17 +62,16 @@ class __HomeBodyState extends ConsumerState<_HomeBody> {
               children: [
                 // const CustomAppBar(),
                 MoviesSlidesShow(movies: playingMoviesSlide),
-    
-    
                 MovieHorizontalListView(
                     movies: nowPlayingMovies,
                     tittle: 'En cines',
                     subtitle: 'Lunes 18',
                     loadNextPage: () {
-                      ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+                      ref
+                          .read(nowPlayingMoviesProvider.notifier)
+                          .loadNextPage();
                     }),
-    
-    
+
                 MovieHorizontalListView(
                     movies: popularMovies,
                     tittle: 'Populares',
@@ -82,8 +79,7 @@ class __HomeBodyState extends ConsumerState<_HomeBody> {
                     loadNextPage: () {
                       ref.read(popularMoviesProvider.notifier).loadNextPage();
                     }),
-    
-    
+
                 MovieHorizontalListView(
                     movies: upcomingMovies,
                     tittle: 'Próximamente',
@@ -91,34 +87,6 @@ class __HomeBodyState extends ConsumerState<_HomeBody> {
                     loadNextPage: () {
                       ref.read(upcomingProvider.notifier).loadNextPage();
                     }),
-    
-    
-                MovieHorizontalListView(
-                    movies: topRatedMovies,
-                    tittle: 'Mejor calificadas',
-                    // subtitle: 'Lunes 18',
-                    loadNextPage: () {
-                      ref.read(topRatedProvider.notifier).loadNextPage();
-                    }),
-
-                        
-                MovieHorizontalListView(
-                    movies: topRatedMovies,
-                    tittle: 'Mejor calificadas',
-                    // subtitle: 'Lunes 18',
-                    loadNextPage: () {
-                      ref.read(topRatedProvider.notifier).loadNextPage();
-                    }),
-
-
-                MovieHorizontalListView(
-                    movies: topRatedMovies,
-                    tittle: 'Mejor calificadas',
-                    // subtitle: 'Lunes 18',
-                    loadNextPage: () {
-                      ref.read(topRatedProvider.notifier).loadNextPage();
-                    }),
-
 
                 MovieHorizontalListView(
                     movies: topRatedMovies,
