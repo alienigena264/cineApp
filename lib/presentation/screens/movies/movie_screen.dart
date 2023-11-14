@@ -1,7 +1,11 @@
-import 'package:cinemapedia/domain/entities/movie.dart';
-import 'package:cinemapedia/presentation/providers/movies/movie_info_provider.dart';
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+//
+import 'package:cinemapedia/domain/entities/movie.dart';
+
+import '../../providers/providers.dart';
 
 class MovieScreen extends ConsumerStatefulWidget {
   static const String routeName = '/movie';
@@ -19,6 +23,7 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
     super.initState();
 
     ref.read(movieInfoProvider.notifier).loadMovie(widget.movieId);
+    ref.read(actorInfoProvider.notifier).loadActors(widget.movieId);
   }
 
   @override
@@ -27,6 +32,7 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
 
     if (movieInfo == null) {
       return const Scaffold(
+        backgroundColor: Colors.black,
         body: Center(
           child: CircularProgressIndicator(),
         ),
@@ -61,7 +67,6 @@ class _MovieDetails extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8),
           child: Row(
-            
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
@@ -78,17 +83,17 @@ class _MovieDetails extends StatelessWidget {
               SizedBox(
                   width: (size.width - 40) * 0.7,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                    Text(
-                      movie.title,
-                      style: textTheme.titleLarge,
-                    ),
-                    Text(
-                      movie.overview,
-                      // style: textTheme.titleMedium,
-                    ),
-                  ]))
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          movie.title,
+                          style: textTheme.titleLarge,
+                        ),
+                        Text(
+                          movie.overview,
+                          // style: textTheme.titleMedium,
+                        ),
+                      ]))
             ],
           ),
         ),
@@ -108,14 +113,71 @@ class _MovieDetails extends StatelessWidget {
             ],
           ),
         ),
-//Todo Poner Actores
-
-        SizedBox(
-          height: 100,
-          child: Text(movie.id.toString(), style: textTheme.titleLarge),
+        _ActorsByMovie(
+          movieId: movie.id.toString(),
+        ),
+        const SizedBox(
+          height: 40,
         ),
       ],
     );
+  }
+}
+
+class _ActorsByMovie extends ConsumerWidget {
+  final String movieId;
+  const _ActorsByMovie({required this.movieId});
+
+  @override
+  Widget build(BuildContext context, ref) {
+    final actorsByMovie = ref.watch(actorInfoProvider);
+    if (actorsByMovie[movieId] == null) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    final actors = actorsByMovie[movieId]!;
+    return SizedBox(
+        height: 306,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: actors.length,
+          itemBuilder: (context, index) {
+            final actor = actors[index];
+            return Container(
+              margin: const EdgeInsets.all(8),
+              width: 150,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FadeInRight(
+                    from: 40,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.network(
+                        actor.profilePath,
+                        fit: BoxFit.cover,
+                        height: 230,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    actor.name,
+                    maxLines: 2,
+                  ),
+                  Text(
+                    actor.character ?? '',
+                    maxLines: 1,
+                    style: const TextStyle(
+                      
+                        fontWeight: FontWeight.bold,
+                        overflow: TextOverflow.ellipsis),
+                  )
+                ],
+              ),
+            );
+          },
+        ));
   }
 }
 
@@ -132,17 +194,22 @@ class CustomSliverAppBar extends StatelessWidget {
       shadowColor: Colors.green,
       flexibleSpace: FlexibleSpaceBar(
         titlePadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        title: Text(
-          movie.title,
-          style: const TextStyle(fontSize: 20),
-          textAlign: TextAlign.start,
-        ),
+        // title: Text(
+        //   movie.title,
+        //   style: const TextStyle(fontSize: 20),
+        //   textAlign: TextAlign.start,
+        // ),
         background: Stack(
           children: [
             SizedBox.expand(
               child: Image.network(
                 movie.posterPath,
                 fit: BoxFit.cover,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if(loadingProgress != null) return const  SizedBox();
+                  return FadeIn(duration: const Duration(milliseconds: 300), child: child);
+                  
+                },
               ),
             ),
             const SizedBox.expand(
