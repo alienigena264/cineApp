@@ -1,7 +1,8 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:cinemapedia/config/helpers/human_formats.dart';
 import 'package:cinemapedia/domain/entities/movie.dart';
-import 'package:flutter/material.dart';
 
+import 'package:flutter/material.dart';
 
 typedef SearchMoviesCallBack = Future<List<Movie>> Function(String query);
 
@@ -10,12 +11,9 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
 
   //Con esto cambio el preview de la búsqueda
   @override
-
   String get searchFieldLabel => 'Buscar película';
 
-
   final SearchMoviesCallBack searchMoviesCallBack;
-
 
   //Esto es la parte derecha del search, el icono de la lupa
   @override
@@ -28,7 +26,7 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
           child: IconButton(
               onPressed: () => query = '',
               icon: const Icon(Icons.clear_rounded)),
-        )  
+        )
     ];
   }
 
@@ -55,16 +53,80 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
       builder: (context, snapshot) {
         final movies = snapshot.data ?? [];
         return ListView.builder(
-          itemCount: movies.length,
-          itemBuilder: (context, index){
-            final movie = movies[index];
-            return ListTile(
-              title: Text(movie.title),
-            );
-          }
-          );
+            itemCount: movies.length,
+            itemBuilder: (context, index) {
+              return _MovieItem(
+                movie: movies[index],
+                onMovieSelected: close,
+              );
+            });
       },
-      
-      );
+    );
+  }
+}
+
+class _MovieItem extends StatelessWidget {
+  const _MovieItem({required this.movie, required this.onMovieSelected});
+
+  final Movie movie;
+  final Function onMovieSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final textStyle = Theme.of(context).textTheme;
+    final Size size = MediaQuery.of(context).size;
+    return GestureDetector(
+      onTap: () {
+        onMovieSelected(context, movie);
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        child: Row(
+          children: [
+            SizedBox(
+              width: size.width * 0.3,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(
+                  movie.posterPath,
+                  loadingBuilder: (context, child, loadingProgress) =>
+                      FadeIn(child: child),
+                ),
+              ),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            SizedBox(
+              width: size.width * 0.6,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(movie.title, style: textStyle.titleMedium),
+                    movie.overview.length >= 150
+                        ? Text('${movie.overview.substring(0, 150)}...')
+                        : Text(movie.overview),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.star_half_rounded,
+                          color: Colors.yellow.shade800,
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          HumanFormats.number(movie.voteAverage, 1),
+                          style: textStyle.bodyMedium!
+                              .copyWith(color: Colors.yellow.shade800),
+                        ),
+                      ],
+                    )
+                  ]),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
