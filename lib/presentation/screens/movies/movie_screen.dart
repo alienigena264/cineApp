@@ -7,6 +7,7 @@ import 'package:cinemapedia/domain/entities/movie.dart';
 import 'package:cinemapedia/presentation/providers/providers.dart';
 import 'package:cinemapedia/presentation/providers/movies/movie_info_provider.dart';
 
+
 class MovieScreen extends ConsumerStatefulWidget {
   static const name = 'movie-screen';
 
@@ -95,7 +96,7 @@ class _MovieDetails extends StatelessWidget {
           ),
         ),
 
-        // Generos de la película
+        // Géneros de la película
         Padding(
           padding: const EdgeInsets.all(8),
           child: Wrap(
@@ -183,22 +184,45 @@ class _ActorsByMovie extends ConsumerWidget {
   }
 }
 
-class _CustomSliverAppBar extends StatelessWidget {
+
+final isFavoriteProvider = FutureProvider.family.autoDispose((ref, int movieId) {
+  final localStorageRepository = ref
+  .watch(localStorageRepositoryProvider);
+  return localStorageRepository.isMovieFavorite(movieId); 
+});
+
+class _CustomSliverAppBar extends ConsumerWidget {
   final Movie movie;
 
   const _CustomSliverAppBar({required this.movie});
 
   @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+  Widget build(BuildContext context, WidgetRef ref) {
 
+    final isFavoriteFuture = ref.watch(isFavoriteProvider(movie.id));
+    final size = MediaQuery.of(context).size;
     return SliverAppBar(
       actions: [
         IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.favorite_border),
+          onPressed: () async {
+            await ref.watch(localStorageRepositoryProvider)
+            .toggleFavorite(movie);
+
+            
+            //Esto desactiva el corazon
+            //  Future.delayed(const Duration(milliseconds: 100));
+            ref.invalidate(isFavoriteProvider(movie.id));
+          },
+
+
+          icon:
+          isFavoriteFuture.when(
+            loading: () => const CircularProgressIndicator(strokeWidth: 2),
+            data: (isFavorite) => isFavorite 
+            ? const Icon(Icons.favorite, color: Colors.red,)
+            : const Icon(Icons.favorite_border),
+            error: (_,__) =>throw UnimplementedError(),))
           // const Icon(Icons.favorite, color: Colors.red,),
-        )
       ],
       backgroundColor: Colors.black,
       expandedHeight: size.height * 0.7,
