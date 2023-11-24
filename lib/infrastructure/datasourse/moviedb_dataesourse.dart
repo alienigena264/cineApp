@@ -11,7 +11,7 @@ import 'package:dio/dio.dart';
 class MovieDbDatasource implements MoviesDatasource {
   final dio = Dio(
     BaseOptions(baseUrl: 'https://api.themoviedb.org/3', queryParameters: {
-      'api_key': environment.theMovieDbKey,
+      'api_key': Environment.theMovieDbKey,
       'language': 'es-CL',
     }),
   );
@@ -21,7 +21,7 @@ class MovieDbDatasource implements MoviesDatasource {
     final movieDbResponse = MovieDbResponse.fromJson(json);
     final List<Movie> movies = movieDbResponse.results
         .where((moviedb) => moviedb.posterPath != 'no-poster')
-        .map((movieDb) => MovieMapper.movieDbToEntity(movieDb))
+        .map((movieDb) => MovieMapper.movieDBToEntity(movieDb))
         .toList();
     return movies;
   }

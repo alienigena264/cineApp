@@ -1,40 +1,5 @@
-// To parse this JSON data, do
-//
-//     final movieDetails = movieDetailsFromJson(jsonString);
-
-import 'dart:convert';
-
-MovieDetails movieDetailsFromJson(String str) => MovieDetails.fromJson(json.decode(str));
-
-String movieDetailsToJson(MovieDetails data) => json.encode(data.toJson());
 
 class MovieDetails {
-    final bool adult;
-    final String backdropPath;
-    final BelongsToCollection? belongsToCollection;
-    final int budget;
-    final List<Genre> genres;
-    final String homepage;
-    final int id;
-    final String imdbId;
-    final String originalLanguage;
-    final String originalTitle;
-    final String overview;
-    final double popularity;
-    final String posterPath;
-    final List<ProductionCompany> productionCompanies;
-    final List<ProductionCountry> productionCountries;
-    final DateTime releaseDate;
-    final int revenue;
-    final int runtime;
-    final List<SpokenLanguage> spokenLanguages;
-    final String status;
-    final String tagline;
-    final String title;
-    final bool video;
-    final double voteAverage;
-    final int voteCount;
-
     MovieDetails({
         required this.adult,
         required this.backdropPath,
@@ -63,6 +28,32 @@ class MovieDetails {
         required this.voteCount,
     });
 
+    final bool adult;
+    final String backdropPath;
+    final BelongsToCollection? belongsToCollection;
+    final int budget;
+    final List<Genre> genres;
+    final String homepage;
+    final int id;
+    final String imdbId;
+    final String originalLanguage;
+    final String originalTitle;
+    final String overview;
+    final double popularity;
+    final String posterPath;
+    final List<ProductionCompany> productionCompanies;
+    final List<ProductionCountry> productionCountries;
+    final DateTime releaseDate;
+    final int revenue;
+    final int runtime;
+    final List<SpokenLanguage> spokenLanguages;
+    final String status;
+    final String tagline;
+    final String title;
+    final bool video;
+    final double voteAverage;
+    final int voteCount;
+
     factory MovieDetails.fromJson(Map<String, dynamic> json) => MovieDetails(
         adult: json["adult"],
         backdropPath: json["backdrop_path"] ?? '',
@@ -71,7 +62,7 @@ class MovieDetails {
         genres: List<Genre>.from(json["genres"].map((x) => Genre.fromJson(x))),
         homepage: json["homepage"],
         id: json["id"],
-        imdbId: json["imdb_id"] ?? '',
+        imdbId: json["imdb_id"],
         originalLanguage: json["original_language"],
         originalTitle: json["original_title"],
         overview: json["overview"],
@@ -121,17 +112,17 @@ class MovieDetails {
 }
 
 class BelongsToCollection {
-    final int id;
-    final String name;
-    final String posterPath;
-    final String backdropPath;
-
     BelongsToCollection({
         required this.id,
         required this.name,
         required this.posterPath,
         required this.backdropPath,
     });
+
+    final int id;
+    final String name;
+    final String posterPath;
+    final String backdropPath;
 
     factory BelongsToCollection.fromJson(Map<String, dynamic> json) => BelongsToCollection(
         id: json["id"],
@@ -149,13 +140,13 @@ class BelongsToCollection {
 }
 
 class Genre {
-    final int id;
-    final String name;
-
     Genre({
         required this.id,
         required this.name,
     });
+
+    final int id;
+    final String name;
 
     factory Genre.fromJson(Map<String, dynamic> json) => Genre(
         id: json["id"],
@@ -169,17 +160,17 @@ class Genre {
 }
 
 class ProductionCompany {
-    final int id;
-    final String? logoPath;
-    final String name;
-    final String originCountry;
-
     ProductionCompany({
         required this.id,
         required this.logoPath,
         required this.name,
         required this.originCountry,
     });
+
+    final int id;
+    final String? logoPath;
+    final String name;
+    final String originCountry;
 
     factory ProductionCompany.fromJson(Map<String, dynamic> json) => ProductionCompany(
         id: json["id"],
@@ -197,13 +188,13 @@ class ProductionCompany {
 }
 
 class ProductionCountry {
-    final String iso31661;
-    final String name;
-
     ProductionCountry({
         required this.iso31661,
         required this.name,
     });
+
+    final String iso31661;
+    final String name;
 
     factory ProductionCountry.fromJson(Map<String, dynamic> json) => ProductionCountry(
         iso31661: json["iso_3166_1"],
@@ -217,15 +208,15 @@ class ProductionCountry {
 }
 
 class SpokenLanguage {
-    final String englishName;
-    final String iso6391;
-    final String name;
-
     SpokenLanguage({
         required this.englishName,
         required this.iso6391,
         required this.name,
     });
+
+    final String englishName;
+    final String iso6391;
+    final String name;
 
     factory SpokenLanguage.fromJson(Map<String, dynamic> json) => SpokenLanguage(
         englishName: json["english_name"],

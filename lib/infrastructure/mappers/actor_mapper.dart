@@ -2,11 +2,13 @@ import 'package:cinemapedia/domain/entities/actor.dart';
 import 'package:cinemapedia/infrastructure/models/moviedb/credits_response.dart';
 
 class ActorMapper {
-  static Actor castToEntity(Cast cast) => Actor(
-      id: cast.id,
-      name: cast.name,
-      profilePath: cast.profilePath != null
-          ? "https://image.tmdb.org/t/p/w500${cast.profilePath}"
-          : 'https://media.istockphoto.com/id/1495088043/vector/user-profile-icon-avatar-or-person-icon-profile-picture-portrait-symbol-default-portrait.jpg?s=612x612&w=0&k=20&c=dhV2p1JwmloBTOaGAtaA3AW1KSnjsdMt7-U_3EZElZ0=',
-      character: cast.character);
+  static Actor castToEntity( Cast cast ) =>
+      Actor(
+        id: cast.id, 
+        name: cast.name, 
+        profilePath: cast.profilePath != null
+        ? 'https://image.tmdb.org/t/p/w500${ cast.profilePath }'
+        : 'https://st3.depositphotos.com/4111759/13425/v/600/depositphotos_134255710-stock-illustration-avatar-vector-male-profile-gray.jpg', 
+        character: cast.character,
+      );
 }
